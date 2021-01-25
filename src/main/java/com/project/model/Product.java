@@ -24,16 +24,16 @@ public class Product {
 	 */
 	private Long id;
 
-	@Column(name = "category", nullable = false, length = 64, columnDefinition = "string")
+	@Column(name = "category", nullable = false, length = 64)
 	private String category;
 
-	@Column(name = "categorytype", nullable = false, length = 64, columnDefinition = "string")
+	@Column(name = "categorytype", nullable = false, length = 64)
 	private String categoryType;
 
-	@Column(name = "name", nullable = false, length = 128, columnDefinition = "string")
+	@Column(name = "name", nullable = false, length = 128)
 	private String name;
 
-	@Column(name = "status", nullable = false, length = 1, columnDefinition = "string")
+	@Column(name = "status", nullable = false, length = 1)
 	private String status;
 
 	@Column(name = "count", nullable = false, columnDefinition = "long")
