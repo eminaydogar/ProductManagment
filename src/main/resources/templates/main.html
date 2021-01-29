@@ -9,7 +9,10 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link  th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+
 
 </head>
 <body>
@@ -30,7 +33,7 @@ Airline IT Solutions</a>
                     </div>
                 </div>
             </div>
-            <table class="table table-striped table-hover table-bordered" id="productTable">
+            <table class="table table-striped table-hover table-bordered" >
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -45,19 +48,19 @@ Airline IT Solutions</a>
                 </thead>
                
                 <tbody class="tbody-td">
-                    <tr th:each="product:${productModel}">
-                        <td><input type="text" disabled="disabled" th:value="${product.id}"></td>
-                        <td><input type="text" disabled="disabled" th:value="${product.category}"></td>
-                        <td><input type="text" disabled="disabled" th:value="${product.categoryType}"></td>
-                        <td><input type="text" disabled="disabled" th:value="${product.name}"></td>
-                        <td><input type="text" disabled="disabled" th:value="${product.status}"></td>
-                        <td><input type="text" disabled="disabled" th:value="${product.count}"></td>
-                        <td><input type="text" disabled="disabled" th:value="${product.price}"></td>
+                    <tr th:each="product:${productModel}" class="productRows">
+                        <td><input type="text" readonly="readonly" style="background-color:#e8e9ed" th:value="${product.id}"></td>
+                        <td><input type="text" readonly="readonly" style="background-color:#e8e9ed" th:value="${product.category}"></td>
+                        <td><input type="text" readonly="readonly" style="background-color:#e8e9ed" th:value="${product.categoryType}"></td>
+                        <td><input type="text" readonly="readonly" style="background-color:#e8e9ed" th:value="${product.name}"></td>
+                        <td><input type="text" readonly="readonly" style="background-color:#e8e9ed" th:value="${product.status}"></td>
+                        <td><input type="text" readonly="readonly" style="background-color:#e8e9ed" th:value="${product.count}"></td>
+                        <td><input type="text" readonly="readonly" style="background-color:#e8e9ed" th:value="${product.price}"></td>
                         <td>
                       
                           <a href="#" class="delete" title="Delete" data-toggle="modal" th:attr="data-id=${product.getId()}" data-target="#deleteModal">
                           <i class="material-icons">&#xE872;</i></a>
-                              <a href="#" class="edit"  data-target="#editModal"
+                              <a href="#" class="edit"  data-target="#editModal" 
                                th:attr="
                                data-id=${product.getId()},
                                data-category=${product.getCategory()},
@@ -114,40 +117,45 @@ Airline IT Solutions</a>
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <div id="postResultDiv">
+      </div>
       <div class="modal-body">
-             <form th:action="@{/update}" th:object="${product}" method="post">
+             <form id=productForm th:object="${product}">
               <div class="form-group">
                <label for="productid">Product ID</label>
-                 <input type="text" class="form-control" required="required" id="productid" aria-describedby="productid" readonly="readonly" style="background-color:#dddddd" th:field="*{id}" >
+                 <input type="text" class="form-control" id="productid" required="required" aria-describedby="productid" readonly="readonly" style="background-color:#dddddd" th:field="*{id}" >
               </div>
               <div class="form-group">
                <label for="category">Category</label>
-                 <input type="text" class="form-control" required="required" maxlength="64" id="category" aria-describedby="category" th:field="*{category}" >
+                 <input type="text" class="form-control" id="category" required="required"  maxlength="64"  aria-describedby="category" th:field="*{category}" >
               </div>
               <div class="form-group">
                <label for="categoryType">CategoryType</label>
-                 <input type="text" class="form-control" required="required" maxlength="64" id="categorytype" aria-describedby="categorytype" th:field="*{categoryType}">
+                 <input type="text" class="form-control" id="categoryType" required="required" maxlength="64" aria-describedby="categorytype" th:field="*{categoryType}">
               </div>
               <div class="form-group">
                <label for="name">Name</label>
-                 <input type="text" class="form-control" required="required" maxlength="128" id="name" aria-describedby="name" th:field="*{name}">
+                 <input type="text" class="form-control"  id="name" required="required" maxlength="128" aria-describedby="name" th:field="*{name}">
               </div>
               <div class="form-group">
                <label for="status">Status</label>
-                 <select class="browser-default custom-select" th:field="*{status}" id="status" required>
+                 <select class="browser-default custom-select" id="status"  th:field="*{status}" required>
                    <option value="Y">Y</option>
                    <option value="N">N</option>
                  </select>
               </div>
               <div class="form-group">
                <label for="count">Count</label>
-                 <input type="number" step="1" class="form-control" max="99999999999" required="required" id="count" aria-describedby="count" th:field="*{count}">
+                 <input type="number" step="1" class="form-control" id="count"  max="99999999999" required="required" aria-describedby="count" th:field="*{count}">
               </div>
               <div class="form-group">
                <label for="price">Price</label>
                  <input type="number" step="0.00001" max="99999999999" class="form-control" required="required" id="price" aria-describedby="price" th:field="*{price}">
               </div>
               <button type="submit" class="btn btn-primary">Update</button>
+              <div class="form-group" id="editResult">
+              
+              </div>
             </form>
       </div>
       <div class="modal-footer">
@@ -172,7 +180,7 @@ Airline IT Solutions</a>
               <form th:action="@{/add}" th:object="${product}" method="post">
               <div class="form-group">
                <label for="productid">Product ID</label>
-                 <input type="number" required="required" class="form-control" id="productid" aria-describedby="productid" max="99999999999" th:field="*{id}" >
+                 <input type="number" required="required" class="form-control" aria-describedby="productid" max="99999999999" th:field="*{id}" >
                  <small id="productid" class="form-text text-muted">Please do not enter any previously entered id</small>
                    <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="text-danger"></span>
               </div>
@@ -213,6 +221,9 @@ Airline IT Solutions</a>
   </div>
 </div>
 <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
-<script th:src="@{/js/editmodal.js}" type="text/javascript"></script>
+<script th:src="@{/js/setValueEditModal.js}" type="text/javascript"></script>
+<script th:src="@{/js/ajax.js}" type="text/javascript"></script>
+
+
 
 </html>
