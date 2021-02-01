@@ -1,16 +1,13 @@
 $(document).ready(
 		function() {
 
-			// SUBMIT FORM
 			$("#productForm").submit(function(event) {
-				// Prevent the form from submitting via the browser.
 				event.preventDefault();
 				ajaxPost();
 			});
 
 			function ajaxPost() {
 
-				// PREPARE FORM DATA
 				var formData = {
 					id : $("#productid").val(),
 					category : $("#category").val(),
@@ -21,7 +18,7 @@ $(document).ready(
 					price : $("#price").val()
 				}
                console.log(JSON.stringify(formData));
-				// DO POST
+				
 				$.ajax({
 					type : "PUT",
 					contentType : "application/json",
